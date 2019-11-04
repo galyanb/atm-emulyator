@@ -13,6 +13,7 @@ public class Starter {
         Starter starter = new Starter();
         starter.FILE_NAME = args[0];
         starter.startAtm();
+        starter.startClientInteraction();
 
     }
 
