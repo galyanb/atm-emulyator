@@ -43,7 +43,11 @@ public class Starter {
                     System.out.println("what's summa?");
                     Integer sum = scanner.nextInt();
                     scanner.nextLine();
+                    if (((ATMService) atm).getBalance()>sum){
                     atm.getCash(sum);
+                    } else {
+                        System.out.println("No money in ATM");
+                    }
                     break;
                 default:
                     System.out.println("Incorrect command");
@@ -56,5 +60,10 @@ public class Starter {
 
     private void startAtm (){
         atm = new ATMImpl();
+        CellImpl[] cells = new CellImpl[4];
+        cells[0] = new CellImpl(Nominal.ONE_HUNDRED,10000);
+        cells[1] = new CellImpl(Nominal.ONE_THOUSAND,10000);
+        cells[1] = new CellImpl(Nominal.FIVE_HUNDRED,10000);
+        cells[1] = new CellImpl(Nominal.FIVE_THOUSANDS,10000);
     }
 }
