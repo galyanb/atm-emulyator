@@ -58,12 +58,9 @@ public class Starter {
         ((ATMService) atm).saveToFile(FILE_NAME);
     }
 
-    private void startAtm (){
-        atm = new ATMImpl();
-        CellImpl[] cells = new CellImpl[4];
-        cells[0] = new CellImpl(Nominal.ONE_HUNDRED,10000);
-        cells[1] = new CellImpl(Nominal.ONE_THOUSAND,10000);
-        cells[1] = new CellImpl(Nominal.FIVE_HUNDRED,10000);
-        cells[1] = new CellImpl(Nominal.FIVE_THOUSANDS,10000);
+    private void startAtm () throws IOException {
+        //atm = new ATMImpl();
+        atm = new ATMImpl(FILE_NAME);
+
     }
 }

@@ -1,8 +1,6 @@
 package ru.sbrf.bg;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 
 public class ATMImpl implements ATMService, ATM {
@@ -15,8 +13,44 @@ public class ATMImpl implements ATMService, ATM {
         }
     }
 
-    public ATMImpl(String fileName){
-        //TODO
+    public ATMImpl(String fileName) throws IOException {
+        File file = new File(fileName);
+        this.atmStorage = new HashMap<>();
+        boolean marker = true;
+        if (file.exists()){
+            FileReader fileReader = new FileReader(file);
+            BufferedReader buf = new BufferedReader(fileReader);
+            String s;
+            try {
+              while ((s=buf.readLine()) != null) {
+                  Integer value = Integer.parseInt(s.substring(0,s.indexOf(":")));
+                  Nominal nominal = Nominal.getNominalFromInt(value);
+                  int count = Integer.parseInt(s.substring(s.indexOf(":")+1),s.length());
+                 // System.out.println(s+" "+value+" "+count);
+                  this.atmStorage.put( nominal, new CellImpl( nominal, count) );
+                  marker=false;
+              }
+          } catch (NumberFormatException nfe){
+              System.out.println("unpossible convert string to number "+nfe.getMessage());
+          }
+          buf.close();
+        } else {
+            System.out.println("File not found");
+        }
+        if (marker){
+            for ( Nominal nominal : Nominal.values() ) {
+                this.atmStorage.put( nominal, new CellImpl( nominal, 0 ) );
+            }
+        }
+    }
+
+    public void cellOut (Nominal nominal){
+        if (this.atmStorage.containsKey(nominal)) {
+            this.atmStorage.remove(nominal);
+            System.out.println(nominal+" cell out");
+        } else {
+            System.out.println(nominal+" cell not exist");}
+
     }
 
     @Override
@@ -98,4 +132,5 @@ public class ATMImpl implements ATMService, ATM {
             }
         }
     }
+
 }
